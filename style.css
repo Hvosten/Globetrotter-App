@@ -12,7 +12,12 @@ main {
     min-height: 100vh;
 }
 
-main div {
+#map {
+    width: 50vh;
+    height: 50vh;
+}
+
+#country_info {
     width: 50%;
     height: 80%;
     display: flex;
@@ -21,9 +26,9 @@ main div {
 }
 
 
-.images img {
-    width: 20rem;
-    height: 14rem;
+img {
+    width: 16rem;
+    height: 10rem;
     object-fit: cover;
 }
 

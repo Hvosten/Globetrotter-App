@@ -6,15 +6,43 @@ const buttonNext = document.getElementById('next');
 const buttonPrevious = document.getElementById('previous');
 const img = document.querySelector('.country_img');
 let index = 0;
+var map = L.map('map');
+map.createPane('labels');
+map.getPane('labels').style.zIndex = 650;
+map.getPane('labels').style.pointerEvents = 'none';
+
+var positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
+        attribution: '©OpenStreetMap, ©CartoDB'
+}).addTo(map);
+
+var positronLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
+        attribution: '©OpenStreetMap, ©CartoDB',
+        pane: 'labels'
+}).addTo(map);
+
+// var geojson = L.geoJson(euCountries).addTo(map);
+// geojson.eachLayer(function (layer) {
+//   layer.bindPopup(layer.feature.properties.name);
+// });
+
+// map.fitBounds(geojson.getBounds());
+
+// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// }).addTo(map);
+
+// L.marker([51.5, -0.09]).addTo(map)
+//     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+//     .openPopup();
 
 const countriesStored = [];
 const countries = [];
+let marker;
 
 const displayCountry = (data) => {
-    img.src = data.flag;
-
     const html = `
     <div class="country_data">
+      <img class="country_img" src="${data.flag}" />
       <h3 class="country_name">${data.name}</h3>
       <h4 class="country_region">${data.subregion}</h4>
       <p class="country_row"><i class="fas fa-city"></i>${data.capital}</p>
@@ -25,6 +53,14 @@ const displayCountry = (data) => {
   `;
     countryInfo.innerHTML = '';
     countryInfo.insertAdjacentHTML('beforeend', html);
+
+    const zoom = data.area > 10000000 ? 2 : (data.area > 7000000 ? 3 : (data.area > 3000000 ? 4 : (data.area > 1000000 ? 5 : (data.area > 300000 ? 6 : 7))))
+    map.setView(data.latlng, zoom);
+    if(marker){marker.remove();}
+    marker = L.marker(data.latlng);
+    marker.addTo(map)
+    .bindPopup(data.name)
+    .openPopup();
 }
 
 const retrieveConuntryByCode = async (code) => {
@@ -67,5 +103,5 @@ buttonPrevious.addEventListener('click', (e)=>{
   }
 })
 
-retrieveConuntry('China')
+retrieveConuntry('Poland')
 

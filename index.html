@@ -12,23 +12,30 @@
     />
     <link rel="stylesheet" href="style.css" />
     
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+    <script defer src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
     <script defer src="script.js"></script>
     <title>JS App</title>
 </head>
 <body>
+    
     <main>
-        <div class="images">
-            <img class="country_img" src="" />
-        </div>
+        <div id="map"></div>
+        
         <div id="country_info">
-            <!-- <div class="country_data">
+             <div class="country_data">
+                <img class="country_img" src="" />
                 <h3 class="country_name">COUNTRY</h3>
                 <h4 class="country_region">REGION</h4>
                 <p class="country_row"><i class="fas fa-city"></i>Capital city</p>
                 <p class="country_row"><i class="fas fa-male"></i>Population</p>
                 <p class="country_row"><i class="fab fa-speakap"></i>Language</p>
                 <p class="country_row"><i class="fas fa-wallet"></i>Currency</p>
-            </div> -->
+            </div> 
         </div>
     </main>
     <footer>
