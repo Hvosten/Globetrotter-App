@@ -1,5 +1,6 @@
 'use strict';
 
+
 const imageContainer = document.querySelector('.images');
 const countryInfo = document.getElementById('country_info');
 const buttonNext = document.getElementById('next');
@@ -61,6 +62,24 @@ const displayCountry = (data) => {
     marker.addTo(map)
     .bindPopup(data.name)
     .openPopup();
+
+    var states = borderPoints.map(arr=>{return {
+      "type": "Feature",
+      "properties": {"party": "Republican"},
+      "geometry": {
+          "type": "Polygon",
+          "coordinates": [arr]
+      }
+  }});
+  
+  L.geoJSON(states, {
+      style: function(feature) {
+          switch (feature.properties.party) {
+              case 'Republican': return {color: "#ff0000"};
+              case 'Democrat':   return {color: "#0000ff"};
+          }
+      }
+  }).addTo(map);
 }
 
 const retrieveConuntryByCode = async (code) => {
@@ -79,7 +98,7 @@ const retrieveConuntry = (country) => {
     })
     .then(data => {
       console.log(data);
-      data[0].borders.filter(c=>!countriesStored.includes(c)).forEach(c=>countries.push(retrieveConuntryByCode(c)));
+      //data[0].borders.filter(c=>!countriesStored.includes(c)).forEach(c=>countries.push(retrieveConuntryByCode(c)));
       displayCountry(data[0]);
     });
 }
@@ -103,5 +122,6 @@ buttonPrevious.addEventListener('click', (e)=>{
   }
 })
 
-retrieveConuntry('Poland')
+
+retrieveConuntry('Australia')
 
