@@ -39,6 +39,7 @@ var positronLabels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_l
 const countriesStored = [];
 const countries = [];
 let marker;
+let geojson;
 
 const displayCountry = (data) => {
     const html = `
@@ -55,7 +56,7 @@ const displayCountry = (data) => {
     countryInfo.innerHTML = '';
     countryInfo.insertAdjacentHTML('beforeend', html);
 
-    const zoom = data.area > 10000000 ? 2 : (data.area > 7000000 ? 3 : (data.area > 3000000 ? 4 : (data.area > 1000000 ? 5 : (data.area > 300000 ? 6 : 7))))
+    const zoom = data.area > 10000000 ? 1 : (data.area > 7000000 ? 2 : (data.area > 3000000 ? 3 : (data.area > 1000000 ? 4 : (data.area > 300000 ? 5 : 6))))
     map.setView(data.latlng, zoom);
     if(marker){marker.remove();}
     marker = L.marker(data.latlng);
@@ -63,7 +64,7 @@ const displayCountry = (data) => {
     .bindPopup(data.name)
     .openPopup();
 
-    var states = borderPoints.map(arr=>{return {
+    var states = borderPoints[data.alpha3Code].map(arr=>{return {
       "type": "Feature",
       "properties": {"party": "Republican"},
       "geometry": {
@@ -72,14 +73,17 @@ const displayCountry = (data) => {
       }
   }});
   
-  L.geoJSON(states, {
+  if(geojson){geojson.remove();}
+  geojson = L.geoJSON(states, {
       style: function(feature) {
           switch (feature.properties.party) {
               case 'Republican': return {color: "#ff0000"};
               case 'Democrat':   return {color: "#0000ff"};
           }
       }
-  }).addTo(map);
+  });
+
+  geojson.addTo(map);
 }
 
 const retrieveConuntryByCode = async (code) => {
@@ -98,7 +102,7 @@ const retrieveConuntry = (country) => {
     })
     .then(data => {
       console.log(data);
-      //data[0].borders.filter(c=>!countriesStored.includes(c)).forEach(c=>countries.push(retrieveConuntryByCode(c)));
+      data[0].borders.filter(c=>!countriesStored.includes(c)).forEach(c=>countries.push(retrieveConuntryByCode(c)));
       displayCountry(data[0]);
     });
 }
@@ -122,6 +126,5 @@ buttonPrevious.addEventListener('click', (e)=>{
   }
 })
 
-
-retrieveConuntry('Australia')
+retrieveConuntry('Canada')
 
