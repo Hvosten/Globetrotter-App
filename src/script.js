@@ -1,5 +1,9 @@
 'use strict';
 
+import borderPoints from '../data/borderPoints.js';
+import cities from '../data/cities.js';
+import {getCountryDataByName, getCountryDataByCode} from './api.js';
+
 const imageContainer = document.querySelector('.images');
 const countryInfo = document.getElementById('country_info');
 const buttonNext = document.getElementById('next');
@@ -21,8 +25,7 @@ const closeModal = function () {
   overlay.classList.add('hidden');
 };
 
-const apiLink = 'https://restcountries.com';
-const apiVersion = '3.1';
+
 
 
 class Application {
@@ -85,27 +88,19 @@ class Application {
 
   async retrieveConuntryByCode(code){
     this.retrievedCountriesCodes.push(code);
-    const response = await fetch(`${apiLink}/v${apiVersion}/alpha/${code}`);
-    const data = await response.json();
+    const data = await getCountryDataByCode(code);
     //console.log(data)
-    data[0].borders.filter(c=>!this.retrievedCountriesCodes.includes(c)).forEach(c=>this.retrievedcountriesData.push(this.retrieveConuntryByCode(c)));
+    data[0].borders.filter(c=>!this.retrievedCountriesCodes.includes(c))
+      .forEach(c=>this.retrievedcountriesData.push(this.retrieveConuntryByCode(c)));
     return data;
 }
 
-  retrieveConuntryByName(country){
-      fetch(`${apiLink}/v${apiVersion}/name/${country}`)
-      .then(response => {
-        //console.log(response);
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-        data[0].borders.filter(c=>!this.retrievedCountriesCodes.includes(c)).forEach(c=>this.retrievedcountriesData.push(this.retrieveConuntryByCode(c)));
-        this._displayCountry(data[0]);
-      })
-      .catch(err =>{
-        console.log(err);
-      });
+  async retrieveConuntryByName(country){
+      const data = await getCountryDataByName(country)
+      
+      data[0].borders.filter(c=>!this.retrievedCountriesCodes.includes(c))
+        .forEach(c=>this.retrievedcountriesData.push(this.retrieveConuntryByCode(c)));
+      this._displayCountry(data[0]);
   }
 
   _addMarkup(data) {
