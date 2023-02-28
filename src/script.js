@@ -2,7 +2,7 @@
 
 import borderPoints from '../data/borderPoints.js';
 import cities from '../data/cities.js';
-import {getCountryDataByName, getCountryDataByCode} from './api.js';
+import {getCountryDataByName, getCountryDataByCode, getAllCountriesCodes} from './api.js';
 
 const imageContainer = document.querySelector('.images');
 const countryInfo = document.getElementById('country_info');
@@ -26,24 +26,40 @@ const closeModal = function () {
 };
 
 
-
+function generateRandomInteger(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 class Application {
   map;
-  retrievedcountriesData = [];
+  retrievedCountriesData = [];
   retrievedCountriesCodes = [];
+  allCountriesCodes = [];
   currIndex = 0;
   cityMarkers = [];
   borderData;
 
   constructor() {
-    this._init();
-    this.retrieveConuntryByName("Poland");
-  }
 
-  _init() {
     this._initMap();
     this._initButtons();
+    //this.retrieveConuntryByName("Poland");
+    this._initCountries();
+  }
+
+  async _initCountries() {
+    this.allCountriesCodes = await getAllCountriesCodes(); 
+    const data = await this._getRandomCountry();
+    this._displayCountry(data);
+    await this._getRandomCountry();
+  }
+
+  async _getRandomCountry(){
+    const randomIndex = generateRandomInteger(0, this.allCountriesCodes.length - 1);
+    const countryCode = this.allCountriesCodes.splice(randomIndex, 1)[0];
+    const data = await getCountryDataByCode(countryCode);
+    this.retrievedCountriesData.push(data[0]);
+    return data[0];
   }
 
   _initMap(){
@@ -67,18 +83,19 @@ class Application {
   _initButtons() {
     buttonNext.addEventListener('click', (e)=>{
       e.preventDefault();
-      if(this.retrievedCountriesCodes.length > this.currIndex + 1) {
+      if(this.retrievedCountriesData.length > this.currIndex + 1) {
         this.currIndex++;
-        const nextCountryPromise = this.retrievedcountriesData[this.currIndex];
-        nextCountryPromise.then(d=>this._displayCountry(d[0]));
+        const nextCountryData = this.retrievedCountriesData[this.currIndex];
+        this._displayCountry(nextCountryData);
+        this._getRandomCountry();
       }
     })
     
     buttonPrevious.addEventListener('click', (e)=>{
       e.preventDefault();
       if(this.currIndex > 0) {
-        const nextCountryPromise = this.retrievedcountriesData[--this.currIndex];
-        nextCountryPromise.then(d=>this._displayCountry(d[0]));
+        const previousCountryData = this.retrievedCountriesData[--this.currIndex];
+        this._displayCountry(previousCountryData);
       }
     })
 
@@ -91,7 +108,7 @@ class Application {
     const data = await getCountryDataByCode(code);
     //console.log(data)
     data[0].borders.filter(c=>!this.retrievedCountriesCodes.includes(c))
-      .forEach(c=>this.retrievedcountriesData.push(this.retrieveConuntryByCode(c)));
+      .forEach(c=>this.retrievedCountriesData.push(this.retrieveConuntryByCode(c)));
     return data;
 }
 
@@ -99,7 +116,7 @@ class Application {
       const data = await getCountryDataByName(country)
       
       data[0].borders.filter(c=>!this.retrievedCountriesCodes.includes(c))
-        .forEach(c=>this.retrievedcountriesData.push(this.retrieveConuntryByCode(c)));
+        .forEach(c=>this.retrievedCountriesData.push(this.retrieveConuntryByCode(c)));
       this._displayCountry(data[0]);
   }
 
@@ -114,7 +131,7 @@ class Application {
       <h4 class="country_region">${data.subregion}</h4>
       <p class="country_row"><i class="fas fa-city"></i>${data.capital}</p>
       <p class="country_row"><i class="fas fa-male"></i>${(+population / 1000000).toFixed(2)}</p>
-      <p class="country_row"><i class="fab fa-speakap"></i>${Object.values(languages).join(', ')}</p>
+      <p class="country_row"><i class="fab fa-speakap"></i>${languages ? Object.values(languages).join(', ') : ''}</p>
       <p class="country_row"><i class="fas fa-wallet"></i>${Object.values(currencies).map(val => `${val.name} (${val.symbol})`).join(', ')}</p>
     </div>
   `;
