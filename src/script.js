@@ -3,14 +3,14 @@
 import borderPoints from '../data/borderPoints.js';
 import cities from '../data/cities.js';
 import {getCountryDataByName, getCountryDataByCode, getAllCountriesCodes} from './api.js';
+import {generateRandomInteger, getImgDominantColor} from './utils.js';
 
-const imageContainer = document.querySelector('.images');
+
 const countryInfo = document.getElementById('country_info');
 const buttonNext = document.getElementById('next');
 const buttonPrevious = document.getElementById('previous');
 const buttonSearch = document.getElementById('search');
 const btnCloseModal = document.querySelector('.close-modal');
-const img = document.querySelector('.country_img');
 
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
@@ -26,9 +26,7 @@ const closeModal = function () {
 };
 
 
-function generateRandomInteger(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+
 
 class Application {
   map;
@@ -121,23 +119,23 @@ class Application {
   }
 
   _addMarkup(data) {
-    console.log(data);
-    console.log('xxxxxxxxxxx');
     const {flags, name, population, languages, currencies} = data;
     const html = `
     <div class="country_data">
-      <img class="country_img" alt=${flags.alt} src="${flags.png}" />
+      <img class="country_img" crossOrigin = "anonymous" alt=${flags.alt} src="${flags.png}" />
       <h3 class="country_name">${name.official}</h3>
       <h4 class="country_region">${data.subregion}</h4>
       <p class="country_row"><i class="fas fa-city"></i>${data.capital}</p>
       <p class="country_row"><i class="fas fa-male"></i>${(+population / 1000000).toFixed(2)}</p>
-      <p class="country_row"><i class="fab fa-speakap"></i>${languages ? Object.values(languages).join(', ') : ''}</p>
-      <p class="country_row"><i class="fas fa-wallet"></i>${Object.values(currencies).map(val => `${val.name} (${val.symbol})`).join(', ')}</p>
+      <p class="country_row"><i class="fab fa-speakap"></i>${languages ? Object.values(languages).join(', ') : 'no data'}</p>
+      <p class="country_row"><i class="fas fa-wallet"></i>${currencies ? Object.values(currencies).map(val => `${val.name} (${val.symbol})`).join(', ') : 'no data'}</p>
     </div>
   `;
   //.map(curr=>`${curr.name} (${curr.symbol})`).join(", ")
     countryInfo.innerHTML = '';
     countryInfo.insertAdjacentHTML('beforeend', html);
+
+    ;
   }
 
   _adjustMap(data) {
@@ -169,8 +167,8 @@ class Application {
     }
   }
 
-  _addBorders(data) {
-    const states = borderPoints[data.cca3].map(arr=>{return {
+  async _addBorders(data) {
+    const countryBorderPoints = borderPoints[data.cca3].map(arr => { return {
       "type": "Feature",
       "properties": {"party": "Republican"},
       "geometry": {
@@ -179,17 +177,17 @@ class Application {
       }
     }});
   
-    if(this.borderData){this.borderData.remove();}
-      this.borderData = L.geoJSON(states, {
-          style: function(feature) {
-              switch (feature.properties.party) {
-                  case 'Republican': return {color: "#ff0000"};
-                  case 'Democrat':   return {color: "#0000ff"};
-              }
-          }
-      });
+    if(this.borderData) this.borderData.remove();
+    const countryImg = document.querySelector('.country_img');
+    const color = await getImgDominantColor(countryImg);
 
-      this.borderData.addTo(this.map);
+    this.borderData = L.geoJSON(countryBorderPoints, {
+      style: function() {
+        return {color};
+      }
+    });
+
+    this.borderData.addTo(this.map);
   }
 
   _displayCountry(data){
@@ -201,3 +199,11 @@ class Application {
 }
 
 const app = new Application();
+
+
+
+
+
+
+
+
