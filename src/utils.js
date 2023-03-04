@@ -1,4 +1,4 @@
-import ColorThief from '../node_modules/colorthief/dist/color-thief.mjs'
+import ColorThief from 'colorthief'
 
 const generateRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -25,4 +25,17 @@ const getImgDominantColor = async img => {
     }
 }
 
-export {generateRandomInteger, getImgDominantColor};
+const getZoom = (countryArea) => {
+    const AREA_OF_WORLD = 510_000_000;
+    const MAP_AREA_IN_PIXELS = 256 * 256;
+
+    const countryAreaInPixels = countryArea * MAP_AREA_IN_PIXELS / AREA_OF_WORLD;
+    const zoom =  - getBaseLog(2, countryAreaInPixels  / MAP_AREA_IN_PIXELS) / 2;
+    return Math.min(10, zoom);
+}
+  
+const getBaseLog = (x, y) => {
+    return Math.log(y) / Math.log(x);
+}
+
+export {generateRandomInteger, getImgDominantColor, getZoom};

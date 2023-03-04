@@ -1,9 +1,14 @@
 'use strict';
 
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
+
+import L from 'leaflet';
 import borderPoints from '../data/borderPoints.js';
 import cities from '../data/cities.js';
 import {getCountryDataByName, getCountryDataByCode, getAllCountriesCodes} from './api.js';
-import {generateRandomInteger, getImgDominantColor} from './utils.js';
+import {generateRandomInteger, getImgDominantColor, getZoom} from './utils.js';
 
 
 const countryInfo = document.getElementById('country_info');
@@ -75,6 +80,7 @@ class Application {
             pane: 'labels'
     }).addTo(this.map);
 
+    this.map.setView([0, 0], 0);
     this.map.on('click',(w)=>console.log(w))
   }
 
@@ -139,8 +145,8 @@ class Application {
   }
 
   _adjustMap(data) {
-    const zoom = data.area > 10000000 ? 1 : (data.area > 7000000 ? 2 : (data.area > 3000000 ? 3 : (data.area > 1000000 ? 4 : (data.area > 300000 ? 5 : 6))))
-    this.map.setView(data.latlng, zoom);
+    const zoom = getZoom(data.area);
+    this.map.flyTo(data.latlng, zoom, {duration: 3});
   }
 
   _addCities(data) {
@@ -192,16 +198,17 @@ class Application {
 
   _displayCountry(data){
     this._addMarkup(data);
-    this._adjustMap(data);
     this._addCities(data);
     this._addBorders(data);
+    this._adjustMap(data);
   }
 }
 
 const app = new Application();
 
-
-
+if (module.hot) {
+  module.hot.accept();
+}
 
 
 
