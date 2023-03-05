@@ -20,7 +20,7 @@ async function getCountryDataByName(name){
     }
 }
 
-async function getAllCountries(requestedFields){
+async function getAllCountriesWithFields(requestedFields){
     if(!requestedFields || !requestedFields.length === 0) throw new Error(`Please specify what fields you want to retrieve`);
     const requestedFieldsStr = requestedFields.join(',');
     try{
@@ -32,9 +32,9 @@ async function getAllCountries(requestedFields){
     }
 }
 
-async function getAllCountriesCodes(){
-    const data = await getAllCountries(['cca3']);
-    return data.map(obj => obj['cca3']);
+async function getAllCountries(){
+    const data = await getAllCountriesWithFields(['cca3', 'name']);
+    return data.map(obj => {return {code: obj.cca3, name: obj.name.common}});
 }
 
-export {getCountryDataByCode, getCountryDataByName, getAllCountriesCodes};
+export {getCountryDataByCode, getCountryDataByName, getAllCountries};

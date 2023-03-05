@@ -1,5 +1,3 @@
-'use strict';
-
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
@@ -7,7 +5,7 @@ import 'regenerator-runtime/runtime';
 import L from 'leaflet';
 import borderPoints from '../data/borderPoints.js';
 import cities from '../data/cities.js';
-import {getCountryDataByName, getCountryDataByCode, getAllCountriesCodes} from './api.js';
+import {getCountryDataByName, getCountryDataByCode, getAllCountries} from './api.js';
 import {generateRandomInteger, getImgDominantColor, getZoom} from './utils.js';
 
 
@@ -51,18 +49,16 @@ class Application {
   }
 
   async _initCountries() {
-    this.allCountriesCodes = await getAllCountriesCodes(); 
-    const data = await this._getRandomCountry();
-    this._displayCountry(data);
-    await this._getRandomCountry();
+    this.allCountries = await getAllCountries();
+    const countryName = this._getRandomCountry();
+    this._upateHashUrl(countryName);
   }
 
-  async _getRandomCountry(){
-    const randomIndex = generateRandomInteger(0, this.allCountriesCodes.length - 1);
-    const countryCode = this.allCountriesCodes.splice(randomIndex, 1)[0];
-    const data = await getCountryDataByCode(countryCode);
-    this.retrievedCountriesData.push(data[0]);
-    return data[0];
+  _getRandomCountry(){
+    const randomIndex = generateRandomInteger(0, this.allCountries.length - 1);
+    const {name} = this.allCountries.splice(randomIndex, 1)[0];
+    return name;
+    
   }
 
   _initMap(){
@@ -90,8 +86,7 @@ class Application {
       if(this.retrievedCountriesData.length > this.currIndex + 1) {
         this.currIndex++;
         const nextCountryData = this.retrievedCountriesData[this.currIndex];
-        this._displayCountry(nextCountryData);
-        this._getRandomCountry();
+        this._upateHashUrl(nextCountryData.name.common);
       }
     })
     
@@ -99,29 +94,42 @@ class Application {
       e.preventDefault();
       if(this.currIndex > 0) {
         const previousCountryData = this.retrievedCountriesData[--this.currIndex];
-        this._displayCountry(previousCountryData);
+        this._upateHashUrl(previousCountryData.name.common);
       }
     })
 
     buttonSearch.addEventListener('click', openModal);
     btnCloseModal.addEventListener('click', closeModal);
+
+    window.addEventListener('hashchange', async (e) => {
+      const urlHash = window.location.hash;
+
+      if(!urlHash) return;
+      
+      const countryName  = urlHash.slice(1);
+      let data = this.retrievedCountriesData.find(countryData => countryData.name.common === countryName);
+      if(!data) data = await this.retrieveCountryByName(countryName);
+      this._displayCountry(data);
+      await this.retrieveCountryByName(this._getRandomCountry());
+    })
   }
 
-  async retrieveConuntryByCode(code){
-    this.retrievedCountriesCodes.push(code);
-    const data = await getCountryDataByCode(code);
-    //console.log(data)
-    data[0].borders.filter(c=>!this.retrievedCountriesCodes.includes(c))
-      .forEach(c=>this.retrievedCountriesData.push(this.retrieveConuntryByCode(c)));
-    return data;
+  async retrieveConuntryByCode(countryCode){
+    const data = await getCountryDataByCode(countryCode);
+      
+    this.retrievedCountriesData.push(data[0]);
+    return data[0];
 }
 
-  async retrieveConuntryByName(country){
-      const data = await getCountryDataByName(country)
+  async retrieveCountryByName(countryName){
+      const data = await getCountryDataByName(countryName);
       
-      data[0].borders.filter(c=>!this.retrievedCountriesCodes.includes(c))
-        .forEach(c=>this.retrievedCountriesData.push(this.retrieveConuntryByCode(c)));
-      this._displayCountry(data[0]);
+      this.retrievedCountriesData.push(data[0]);
+      return data[0];
+  }
+
+  _upateHashUrl(countryName){
+    window.location.hash = countryName;
   }
 
   _addMarkup(data) {
@@ -132,7 +140,7 @@ class Application {
       <h3 class="country_name">${name.official}</h3>
       <h4 class="country_region">${data.subregion}</h4>
       <p class="country_row"><i class="fas fa-city"></i>${data.capital}</p>
-      <p class="country_row"><i class="fas fa-male"></i>${(+population / 1000000).toFixed(2)}</p>
+      <p class="country_row"><i class="fas fa-male"></i>${(+population / 1_000_000).toFixed(4)} mln</p>
       <p class="country_row"><i class="fab fa-speakap"></i>${languages ? Object.values(languages).join(', ') : 'no data'}</p>
       <p class="country_row"><i class="fas fa-wallet"></i>${currencies ? Object.values(currencies).map(val => `${val.name} (${val.symbol})`).join(', ') : 'no data'}</p>
     </div>
