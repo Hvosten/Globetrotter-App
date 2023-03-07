@@ -1,8 +1,8 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
-import countryView from './views/countryView.js';
-import mapView from './views/mapView.js';
+import countryView from '../views/countryView.js';
+import mapView from '../views/mapView.js';
 
 import {getCountryDataByName, getCountryDataByCode, getAllCountries} from './api.js';
 import {generateRandomInteger} from './utils.js';
@@ -87,6 +87,7 @@ class Application {
   }
 
   _displayCountry(data){
+    countryView.renderSpinner();
     countryView.render(data);
     mapView.render(data);
   }

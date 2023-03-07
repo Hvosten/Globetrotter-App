@@ -1,9 +1,11 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+
 :root{
     --primary-color:#7fe5f0;
     --secondary-color: #b6fcd5;
     --dark-color: #0a75ad;
     --light-color: #e6e6fa;
-
 }
 
 * {
@@ -21,9 +23,19 @@ main {
     height: 100vh;
 }
 
-#map {
+.section {
     width: 50%;
+    display: flex;
+    flex-flow: column;
     height: 100%;
+}
+
+.results{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    flex: 1 1 auto;
 }
 
 #country_info {
@@ -39,22 +51,6 @@ img {
     width: 18rem;
     height: 12rem;
     object-fit: cover;
-}
-
-footer {
-    background-color: var(--dark-color);
-    width: 10%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-button {
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    margin-left: 10px;
 }
 
 .country_data {
@@ -74,18 +70,5 @@ button {
 
 .country_row i {
     margin-right: 15px;
-}
-
-.btn-light {
-    background-color: var(--light-color);
-    margin-bottom: 2rem;
-}
-
-button i {
-    padding: 0.5rem;
-}
-
-button:hover {
-    opacity: 0.8;
 }
 

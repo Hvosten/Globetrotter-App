@@ -2,7 +2,7 @@ import L from 'leaflet';
 import cities from '../data/cities.js';
 import borderPoints from '../data/borderPoints.js';
 
-import {getImgDominantColor, getZoom} from '../utils.js';
+import {getImgDominantColor, getZoom} from '../js/utils.js';
 
 class MapView{
     #map;

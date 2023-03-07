@@ -12,44 +12,48 @@
       integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./src/sass/style.scss" />
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
         crossorigin=""/>
-    <!-- <script defer src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script> -->
-    <script defer src="./src/script.js" type="module"></script>
+    <script defer src="./src/js/controller.js" type="module"></script>
     <title>JS App</title>
 </head>
 <body>
     
     <main>
-        <div id="map"></div>
-        
-        <div id="country_info">
-            <!-- <div class="input-group mb-3">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon1">Button</button>
-                <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-              </div> -->
-              
-             <div class="country_data">
-                <!-- <img class="country_img" src="" />
-                <h3 class="country_name">COUNTRY</h3>
-                <h4 class="country_region">REGION</h4>
-                <p class="country_row"><i class="fas fa-city"></i>Capital city</p>
-                <p class="country_row"><i class="fas fa-male"></i>Population</p>
-                <p class="country_row"><i class="fab fa-speakap"></i>Language</p>
-                <p class="country_row"><i class="fas fa-wallet"></i>Currency</p> -->
-            </div> 
+        <div id="map" class="section"></div>
+        <div class="section">
+            <div class="input-group p-3">
+                <input type="text" class="form-control" placeholder="Country name" aria-label="Country name" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-info"><i class="fas fa-search fa-2x"></i></button>
+                  <!-- <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button> -->
+                </div>
+            </div>
+            <div class="results">
+                <button id="previous" type="button" class="btn btn-outline-primary"><i class="fas fa-arrow-left fa-2x"></i></button>
+                <div id="country_info">
+                    <!-- <div class="country_data">
+                        <img class="country_img" src="" />
+                        <h3 class="country_name">COUNTRY</h3>
+                        <h4 class="country_region">REGION</h4>
+                        <p class="country_row"><i class="fas fa-city"></i>Capital city</p>
+                        <p class="country_row"><i class="fas fa-male"></i>Population</p>
+                        <p class="country_row"><i class="fab fa-speakap"></i>Language</p>
+                        <p class="country_row"><i class="fas fa-wallet"></i>Currency</p>
+                    </div>  -->
+                </div>
+                <button id="next" type="button" class="btn btn-outline-primary"><i class="fas fa-arrow-right fa-2x"></i></button>
+            </div>
         </div>
 
-        <footer>
-            <button id="previous" class="btn-light"><i class="fas fa-arrow-left fa-2x"></i></button>
-            <button id="next" class="btn-light"><i class="fas fa-arrow-right fa-2x"></i></button>
+        <!-- <footer>
+            
+            
             <button id="search" class="btn-light"><i class="fas fa-search fa-2x"></i></button>
-        </footer>
+        </footer> -->
 
     </main>
     
