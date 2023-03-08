@@ -91,7 +91,7 @@ class MapView{
     #adjustMapZoom(area, latlng) {
         const zoom = getZoom(area);
         this.#map.flyTo(latlng, zoom, {duration: 3});
-      }
+    }
 }
 
 export default new MapView();

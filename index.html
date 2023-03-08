@@ -18,7 +18,6 @@
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
         crossorigin=""/>
     <script defer src="./src/js/controller.js" type="module"></script>
-    <title>JS App</title>
 </head>
 <body>
     
@@ -26,10 +25,9 @@
         <div id="map" class="section"></div>
         <div class="section">
             <div class="input-group p-3">
-                <input type="text" class="form-control" placeholder="Country name" aria-label="Country name" aria-describedby="button-addon2">
+                <input id="countryInput" type="text" class="form-control" placeholder="Country name" aria-label="Country name" aria-describedby="button-addon2">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-outline-info"><i class="fas fa-search fa-2x"></i></button>
-                  <!-- <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button> -->
+                    <button id ="search" type="button" class="btn btn-outline-info"><i class="fas fa-search fa-2x"></i></button>
                 </div>
             </div>
             <div class="results">
@@ -48,12 +46,6 @@
                 <button id="next" type="button" class="btn btn-outline-primary"><i class="fas fa-arrow-right fa-2x"></i></button>
             </div>
         </div>
-
-        <!-- <footer>
-            
-            
-            <button id="search" class="btn-light"><i class="fas fa-search fa-2x"></i></button>
-        </footer> -->
 
     </main>
     
