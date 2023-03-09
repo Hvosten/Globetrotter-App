@@ -18,6 +18,10 @@ class CountryView{
         this.#parentEl.insertAdjacentHTML('beforeend', markup);
     }
 
+    addRenderHandler(handler){
+        window.addEventListener('hashchange', handler);
+    }
+
     #clear(){
         this.#parentEl.innerHTML = '';
     }

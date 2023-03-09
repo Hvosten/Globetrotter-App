@@ -1,3 +1,4 @@
+import { TIMEOUT_SEC } from './config.js';
 import ColorThief from 'colorthief'
 
 const generateRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -38,4 +39,22 @@ const getBaseLog = (x, y) => {
     return Math.log(y) / Math.log(x);
 }
 
-export {generateRandomInteger, getImgDominantColor, getZoom};
+const timeout = (sec) => {
+    return new Promise((_, reject) => {
+        setTimeout(() => {
+            reject(new Error(`Timeout! Request took more than ${sec} seconds!`));
+        }, sec * 1000)
+    });
+}
+
+const getJSON = async (url) => {
+    try{
+        const response = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
+        const data = await response.json();
+        return data;
+    } catch(e){
+        throw e;
+    }
+}
+
+export {generateRandomInteger, getImgDominantColor, getZoom, getJSON};

@@ -1,9 +1,9 @@
 import { API_LINK, API_VERSION } from './config.js';
+import { getJSON } from './utils.js';
 
 async function getCountryDataByCode(code){
     try{
-        const response = await fetch(`${API_LINK}/v${API_VERSION}/alpha/${code}`);
-        const data = await response.json();
+        const data = await getJSON(`${API_LINK}/v${API_VERSION}/alpha/${code}`);
         return data;
     } catch(err){
         throw new Error(`Error fetching country data: ${err.message}`);
@@ -12,8 +12,7 @@ async function getCountryDataByCode(code){
 
 async function getCountryDataByName(name){
     try{
-        const response = await fetch(`${API_LINK}/v${API_VERSION}/name/${name}`)
-        const data = await response.json();
+        const data = await getJSON(`${API_LINK}/v${API_VERSION}/name/${name}`);
         return data;
     } catch(err){
         throw new Error(`Error fetching country data: ${err.message}`);
