@@ -6,7 +6,7 @@ async function getCountryDataByCode(code){
         const data = await getJSON(`${API_LINK}/v${API_VERSION}/alpha/${code}`);
         return data;
     } catch(err){
-        throw new Error(`Error fetching country data: ${err.message}`);
+        throw err;
     }
 }
 
@@ -15,7 +15,7 @@ async function getCountryDataByName(name){
         const data = await getJSON(`${API_LINK}/v${API_VERSION}/name/${name}`);
         return data;
     } catch(err){
-        throw new Error(`Error fetching country data: ${err.message}`);
+        throw err;
     }
 }
 
@@ -27,7 +27,7 @@ async function getAllCountriesWithFields(requestedFields){
         const data = await response.json();
         return data
     } catch(err){
-        throw new Error(`Error fetching countries: ${err.message}`);
+        throw err;
     }
 }
 

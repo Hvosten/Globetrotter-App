@@ -1,6 +1,7 @@
 class CountryView{
     #parentEl = document.getElementById('country_info');
     #data;
+    #errorMessage = `Couldn't find that country. Please try another one!`
 
     render(data){
         this.#data = data;
@@ -13,6 +14,16 @@ class CountryView{
         const markup = `
         <div class="spinner-grow" role="status">
             <span class="sr-only">Loading...</span>
+        </div>
+        `;
+        this.#parentEl.insertAdjacentHTML('beforeend', markup);
+    }
+
+    renderError(message = this.#errorMessage){
+        this.#clear();
+        const markup = `
+        <div class="alert alert-danger" role="alert">
+            ${message}
         </div>
         `;
         this.#parentEl.insertAdjacentHTML('beforeend', markup);

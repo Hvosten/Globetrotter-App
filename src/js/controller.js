@@ -70,22 +70,25 @@ function initButtons() {
 }
 
 async function controlCountry() {
-
-  const urlHash = window.location.hash;
-  if(!urlHash) return;
-  countryView.renderSpinner();
-  
-  const countryName  = urlHash.slice(1);
-  let countryIndex = retrievedCountriesData.findIndex(countryData => countryData.name.common === countryName);
-  let data;
-  if(countryIndex === -1) {
-    currIndex = retrievedCountriesData.length;
-    data = await retrieveCountryByName(countryName);
-  } else {
-    currIndex = countryIndex;
-    data =  retrievedCountriesData[countryIndex];
+  try{
+    const urlHash = window.location.hash;
+    if(!urlHash) return;
+    countryView.renderSpinner();
+    
+    const countryName  = urlHash.slice(1);
+    let countryIndex = retrievedCountriesData.findIndex(countryData => countryData.name.common === countryName);
+    let data;
+    if(countryIndex === -1) {
+      currIndex = retrievedCountriesData.length;
+      data = await retrieveCountryByName(countryName);
+    } else {
+      currIndex = countryIndex;
+      data =  retrievedCountriesData[countryIndex];
+    }
+    displayCountry(data);
+  } catch(e){
+    countryView.renderError();
   }
-  displayCountry(data);
 }
 
 async function retrieveConuntryByCode(countryCode){
@@ -97,7 +100,7 @@ async function retrieveConuntryByCode(countryCode){
 
 async function retrieveCountryByName(countryName){
     const data = await getCountryDataByName(countryName);
-    
+    console.log(data)
     retrievedCountriesData.push(data[0]);
     return data[0];
 }

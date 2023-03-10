@@ -51,9 +51,10 @@ const getJSON = async (url) => {
     try{
         const response = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
         const data = await response.json();
+        if(data.status === 404) throw new Error(`${data.message} (${data.status})`);
         return data;
-    } catch(e){
-        throw e;
+    } catch(err){
+        throw err;
     }
 }
 
