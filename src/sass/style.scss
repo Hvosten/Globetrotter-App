@@ -42,6 +42,7 @@ main {
     width: 40%;
     height: 80%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -72,3 +73,10 @@ img {
     margin-right: 15px;
 }
 
+.badge-primary{
+    background-color: #007bff;
+}
+
+a:link {
+    text-decoration: none;
+}
