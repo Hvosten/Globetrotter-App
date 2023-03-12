@@ -5,14 +5,14 @@ import Fuse from 'fuse.js'
 
 import countryView from '../views/countryView.js';
 import mapView from '../views/mapView.js';
+import searchView from '../views/searchView.js'
 
-import {getCountryDataByName, getCountryDataByCode, getAllCountries} from './api.js';
+import {getCountryDataByName, getAllCountries} from './api.js';
 import {generateRandomInteger} from './utils.js';
 
 const buttonNext = document.getElementById('next');
 const buttonPrevious = document.getElementById('previous');
-const buttonSearch = document.getElementById('search');
-const inputEl = document.getElementById('countryInput');
+
 
 
 
@@ -71,15 +71,16 @@ function initButtons() {
     }
   })
   
-  buttonSearch.addEventListener('click', (e) =>{
-    e.preventDefault();
-    const countryName = inputEl.value;
-    if(countryName === "") return;
-    upateHashUrl(countryName);
-    inputEl.value = "";
-  })
+  
   
   countryView.addRenderHandler(controlCountry);
+  searchView.addHandlerSearch(controlSearch);
+}
+
+function controlSearch(){
+  const countryName = searchView.getCountry();
+  if(!countryName) return;
+  upateHashUrl(countryName);
 }
 
 async function controlCountry() {
@@ -107,13 +108,6 @@ async function controlCountry() {
       countryView.renderBadges(similarCountryNames);
     }
   }
-}
-
-async function retrieveConuntryByCode(countryCode){
-  const data = await getCountryDataByCode(countryCode);
-  
-  retrievedCountriesData.push(data[0]);
-  return data[0];
 }
 
 async function retrieveCountryByName(countryName){
