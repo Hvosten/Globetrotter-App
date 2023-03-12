@@ -30,6 +30,7 @@ class CountryView{
     }
 
     renderBadges(countryNames){
+        if(countryNames.length === 0) return;
         const markup = `
         <div class="alert alert-info" role="alert">
             Did you mean: ${countryNames.map(cName => `<a href="#${cName}" class="badge badge-pill badge-primary">${cName}</a>`).join('')}
@@ -39,7 +40,21 @@ class CountryView{
     }
 
     addRenderHandler(handler){
-        window.addEventListener('hashchange', handler);
+        ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
+    }
+
+    addNextButtonHandler(handler){
+        document.getElementById('next').addEventListener('click', (e)=>{
+            e.preventDefault();
+            handler();
+        })
+    }
+
+    addPrevButtonHandler(handler){
+        document.getElementById('previous').addEventListener('click', (e)=>{
+            e.preventDefault();
+            handler();
+        })
     }
 
     #clear(){
