@@ -33,7 +33,7 @@ class CountryView{
         if(countryNames.length === 0) return;
         const markup = `
         <div class="alert alert-info" role="alert">
-            Did you mean: ${countryNames.map(cName => `<a href="#${cName}" class="badge badge-pill badge-primary">${cName}</a>`).join('')}
+            Did you mean: ${countryNames.map(cName => `<a href="#${cName}" class="badge badge-pill badge-blue">${cName}</a>`).join('')}
         </div>
         `;
         this.#parentEl.insertAdjacentHTML('beforeend', markup);

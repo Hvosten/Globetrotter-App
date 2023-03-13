@@ -3,9 +3,6 @@
 
 :root{
     --primary-color:#7fe5f0;
-    --secondary-color: #b6fcd5;
-    --dark-color: #0a75ad;
-    --light-color: #e6e6fa;
 }
 
 * {
@@ -15,7 +12,7 @@
 }
 
 main {
-    background-color: var(--light-color);
+    background-color: #E6E6FA;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -56,7 +53,7 @@ img {
 
 .country_data {
     /* padding: 0.5rem; */
-    background-color: white;
+    background-color: var(--bs-light);;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -73,11 +70,16 @@ img {
     margin-right: 15px;
 }
 
-.badge-primary{
-    background-color: #007bff;
+.badge-blue{
+    background-color: var(--bs-primary);
     margin: 2px;
 }
 
 a:link {
     text-decoration: none;
+}
+
+a:hover{
+    color: var(--bs-primary);
+    background-color: var(--bs-light);
 }
