@@ -1,4 +1,4 @@
-import {getCountryDataByName, getAllCountries} from './api.js';
+import {getCountryDataByName, getAllCountriesNames} from './api.js';
 import {generateRandomInteger} from './utils.js';
 import Fuse from 'fuse.js'
 
@@ -28,7 +28,7 @@ export async function getCountryData(countryName) {
 }
 
 export async function initCountries() {
-    state.allCountries = await getAllCountries();
+    state.allCountries = await getAllCountriesNames();
 
     const options = {
       isCaseSensitive: true,
@@ -37,11 +37,7 @@ export async function initCountries() {
       findAllMatches: true
     }
 
-    fuse = new Fuse(state.allCountries.map(obj => obj.name), options)
-    
-    //getRandomCountry();
-
-    //upateHashUrl(countryName);
+    fuse = new Fuse(state.allCountries, options);
 }
 
 export function generateSimilarCountries() {
@@ -51,8 +47,7 @@ export function generateSimilarCountries() {
 
 export function getRandomCountry(){
     const index = generateRandomInteger(0, state.allCountries.length - 1);
-    const { name } = state.allCountries.splice(index, 1)[0];
-    return name;
+    return state.allCountries.splice(index, 1)[0];
 }
 
 export function getPrevCountryName(){

@@ -2,6 +2,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 import * as model from './model.js';
+import TimeoutError from './errors/TimeoutError.js';
 
 
 import countryView from '../views/countryView.js';
@@ -37,10 +38,14 @@ async function countryController() {
     mapView.render(model.state.currentCountryData);
   } catch(err){
     console.log(err);
-    countryView.renderError();
-
-    model.generateSimilarCountries();
-    countryView.renderBadges(model.state.similarCountryNames);
+    
+    if (err instanceof TimeoutError){
+      countryView.renderError(err.message);
+    } else {
+      countryView.renderError(`Couldn't find ${model.state.currentCountryName} country!`);
+      model.generateSimilarCountries();
+      countryView.renderBadges(model.state.similarCountryNames);
+    }
   }
 }
 

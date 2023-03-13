@@ -1,5 +1,6 @@
 import { TIMEOUT_SEC } from './config.js';
 import ColorThief from 'colorthief'
+import TimeoutError from './errors/TimeoutError';
 
 const generateRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -42,7 +43,7 @@ const getBaseLog = (x, y) => {
 const timeout = (sec) => {
     return new Promise((_, reject) => {
         setTimeout(() => {
-            reject(new Error(`Timeout! Request took more than ${sec} seconds!`));
+            reject(new TimeoutError(`Server is busy right now! Request took more than ${sec} seconds, please try again later.`));
         }, sec * 1000)
     });
 }

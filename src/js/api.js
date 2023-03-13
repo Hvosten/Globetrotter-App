@@ -31,9 +31,9 @@ async function getAllCountriesWithFields(requestedFields){
     }
 }
 
-async function getAllCountries(){
-    const data = await getAllCountriesWithFields(['cca3', 'name']);
-    return data.map(obj => {return {code: obj.cca3, name: obj.name.common}});
+async function getAllCountriesNames(){
+    const data = await getAllCountriesWithFields(['name']);
+    return data.map(obj => obj.name.common);
 }
 
-export {getCountryDataByCode, getCountryDataByName, getAllCountries};
+export {getCountryDataByCode, getCountryDataByName, getAllCountriesNames};
