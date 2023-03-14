@@ -13,6 +13,13 @@ class SearchView{
             e.preventDefault();
             handler();
         })
+
+        this.#inputEl.addEventListener('keypress', (e) => {
+            if (e.key === "Enter"){
+                e.preventDefault();
+                handler();
+            } 
+        })
     }
 }
 

@@ -1,7 +1,6 @@
 class CountryView{
     #parentEl = document.getElementById('country_info');
     #data;
-    #errorMessage = `Couldn't find that country. Please try another one!`
 
     render(data){
         this.#data = data;
@@ -19,7 +18,7 @@ class CountryView{
         this.#parentEl.insertAdjacentHTML('beforeend', markup);
     }
 
-    renderError(message = this.#errorMessage){
+    renderError(message){
         this.#clear();
         const markup = `
         <div class="alert alert-danger" role="alert">
@@ -62,16 +61,29 @@ class CountryView{
     }
 
     #generateMarkup(){
-        const {flags, name, population, languages, currencies} = this.#data;
+        const {commonName,
+            officialName,
+            currencies,
+            capital,
+            spellings,
+            region,
+            subregion,
+            languages,
+            area,
+            population,
+            flag,
+            flagPicture,
+            flagAlt
+        } = this.#data;
         return `
         <div class="country_data">
-            <img class="country_img" crossOrigin = "anonymous" alt=${flags.alt} src="${flags.png}" />
-            <h3 class="country_name">${name.official}</h3>
-            <h4 class="country_region">${this.#data.subregion}</h4>
-            <p class="country_row"><i class="fas fa-city"></i>${this.#data.capital}</p>
+            <img class="country_img" crossOrigin = "anonymous" alt=${flagAlt} src="${flagPicture}" />
+            <h3 class="country_name">${officialName}</h3>
+            <h4 class="country_region">${subregion}</h4>
+            <p class="country_row"><i class="fas fa-city"></i>${capital ?? 'no data'}</p>
             <p class="country_row"><i class="fas fa-male"></i>${(+population / 1_000_000).toFixed(4)} mln</p>
-            <p class="country_row"><i class="fab fa-speakap"></i>${languages ? Object.values(languages).join(', ') : 'no data'}</p>
-            <p class="country_row"><i class="fas fa-wallet"></i>${currencies ? Object.values(currencies).map(val => `${val.name} (${val.symbol})`).join(', ') : 'no data'}</p>
+            <p class="country_row"><i class="fab fa-speakap"></i>${languages ? languages.join(', ') : 'no data'}</p>
+            <p class="country_row"><i class="fas fa-wallet"></i>${currencies ? currencies.map(curr => `${curr.name} (${curr.symbol})`).join(', ') : 'no data'}</p>
         </div>
         `
     }

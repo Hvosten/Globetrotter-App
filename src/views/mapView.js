@@ -29,9 +29,9 @@ class MapView{
     }
 
     render(data){
-        const {cca3 : countryCode, area, latlng} = data;
-        this.#addCities(countryCode);
-        this.#addBorders(countryCode);
+        const {codeAlpha3, area, latlng} = data;
+        this.#addCities(codeAlpha3);
+        this.#addBorders(codeAlpha3);
         this.#adjustMapZoom(area, latlng);
     }
 
