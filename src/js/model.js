@@ -30,17 +30,18 @@ export async function getCountryData(countryName) {
 
 function createCountryObject(data){
     const countryData = data[0];
+    console.log(countryData)
     return {
         commonName: countryData.name.common,
         officialName: countryData.name.official,
         codeAlpha2: countryData.cca2,
         codeAlpha3: countryData.cca3,
-        currencies: Object.keys(countryData.currencies).map(curr => {return {ISOCode: curr, name: countryData.currencies[curr].name, symbol: countryData.currencies[curr].symbol}}),
+        currencies: Object.keys(countryData.currencies ?? {}).map(curr => {return {ISOCode: curr, name: countryData.currencies[curr].name, symbol: countryData.currencies[curr].symbol}}),
         capital: countryData.capital,
         spellings: countryData.altSpellings,
         region: countryData.region,
         subregion: countryData.subregion,
-        languages: Object.values(countryData.languages),
+        languages: Object.values(countryData.languages ?? {}),
         latlng: countryData.latlng,
         borders: countryData.borders,
         area: countryData.area,

@@ -35,40 +35,45 @@ main {
     flex: 1 1 auto;
 }
 
+i {
+    margin-right: 5px;
+}
+
 #country_info {
-    width: 40%;
-    height: 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    padding: 20px;
+    // width: 40%;
+    // height: 80%;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
 }
 
 
-img {
-    width: 18rem;
-    height: 12rem;
-    object-fit: cover;
-}
+// img {      
+//     width: 18rem;
+//     height: 12rem;
+//     object-fit: cover;
+// }
 
-.country_data {
-    /* padding: 0.5rem; */
-    background-color: var(--bs-light);;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+// .country_data {
+//     /* padding: 0.5rem; */
+//     background-color: var(--bs-light);;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+// }
 
-.country_row {
-    padding: 10px 0;
-    display: flex;
-    justify-content: flex-start;
-}
+// .country_row {
+//     padding: 10px 0;
+//     display: flex;
+//     justify-content: flex-start;
+// }
 
-.country_row i {
-    margin-right: 15px;
-}
+// .country_row i {
+//     margin-right: 15px;
+// }
 
 .badge-blue{
     background-color: var(--bs-primary);

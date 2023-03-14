@@ -76,16 +76,31 @@ class CountryView{
             flagAlt
         } = this.#data;
         return `
-        <div class="country_data">
+        <div class="card" style="width: 18rem;">
             <img class="country_img" crossOrigin = "anonymous" alt=${flagAlt} src="${flagPicture}" />
-            <h3 class="country_name">${officialName}</h3>
-            <h4 class="country_region">${subregion}</h4>
-            <p class="country_row"><i class="fas fa-city"></i>${capital ?? 'no data'}</p>
-            <p class="country_row"><i class="fas fa-male"></i>${(+population / 1_000_000).toFixed(4)} mln</p>
-            <p class="country_row"><i class="fab fa-speakap"></i>${languages ? languages.join(', ') : 'no data'}</p>
-            <p class="country_row"><i class="fas fa-wallet"></i>${currencies ? currencies.map(curr => `${curr.name} (${curr.symbol})`).join(', ') : 'no data'}</p>
+            <div class="card-body">
+                <h5 class="card-title">${officialName}</h5>
+                <p class="card-text">${region} (${subregion}) ${flag}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="fas fa-city"></i>${capital ?? 'no data'}</li>
+                <li class="list-group-item"><i class="fas fa-male"></i>${(+population / 1_000_000).toFixed(4)} mln</li>
+                <li class="list-group-item"><i class="fab fa-speakap"></i>${languages ? languages.join(', ') : 'no data'}</li>
+                <li class="list-group-item"><i class="fas fa-wallet"></i>${currencies ? currencies.map(curr => `${curr.name} (${curr.symbol})`).join(', ') : 'no data'}</li>
+            </ul>
         </div>
         `
+        // return `
+        // <div class="country_data">
+        //     <img class="country_img" crossOrigin = "anonymous" alt=${flagAlt} src="${flagPicture}" />
+        //     <h3 class="country_name">${officialName}</h3>
+        //     <h4 class="country_region">${subregion}</h4>
+        //     <p class="country_row"><i class="fas fa-city"></i>${capital ?? 'no data'}</p>
+        //     <p class="country_row"><i class="fas fa-male"></i>${(+population / 1_000_000).toFixed(4)} mln</p>
+        //     <p class="country_row"><i class="fab fa-speakap"></i>${languages ? languages.join(', ') : 'no data'}</p>
+        //     <p class="country_row"><i class="fas fa-wallet"></i>${currencies ? currencies.map(curr => `${curr.name} (${curr.symbol})`).join(', ') : 'no data'}</p>
+        // </div>
+        // `
     }
 }
 
