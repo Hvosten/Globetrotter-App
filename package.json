@@ -13,13 +13,16 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.3",
+    "cross-fetch": "^3.1.5",
     "parcel": "^2.8.3",
     "process": "^0.11.10",
-    "sass": "^1.58.3"
+    "sass": "^1.58.3",
+    "vitest": "^0.29.3"
   },
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "test": "vitest --globals"
   },
   "repository": {
     "type": "git",
