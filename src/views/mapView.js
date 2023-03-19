@@ -2,7 +2,7 @@ import L from 'leaflet';
 import cities from '../data/cities.js';
 import borderPoints from '../data/borderPoints.js';
 
-import {getImgDominantColor, getZoom} from '../js/utils.js';
+import {getImgDominantColor, getPalette, getZoom, changePropery} from '../js/utils.js';
 
 class MapView{
     #map;
@@ -30,9 +30,22 @@ class MapView{
 
     render(data){
         const {codeAlpha3, area, latlng} = data;
-        this.#addCities(codeAlpha3);
         this.#addBorders(codeAlpha3);
+        this.#addCities(codeAlpha3);
         this.#adjustMapZoom(area, latlng);
+    }
+
+    async #getColors(){
+        const countryImg = document.querySelector('.country_img');
+        const color = await getImgDominantColor(countryImg);
+        const pallete = await getPalette(countryImg);
+
+        const rootEl = document.querySelector(':root');
+        pallete.slice(0, 2).forEach((c, i) => {
+            changePropery(rootEl, `--city${i+1}-color`, c)
+        })
+
+        return color;
     }
 
     #addCities(countryCode) {
@@ -41,14 +54,14 @@ class MapView{
         
         const mainCities = cities[countryCode];
         if(mainCities) {
-            mainCities.forEach(c => {
+            mainCities.forEach((c,i) => {
                 const marker = L.marker(c.latlng);
                 marker.addTo(this.#map)
                     .bindPopup(
                         L.popup({
                             autoClose: false,
                             closeOnClick: false,
-                            //className: `${workout.type}-popup`,
+                            className: `city${i+1}-popup`,
                         })
                     )
                     .setPopupContent(
@@ -61,6 +74,7 @@ class MapView{
     }
 
     async #addBorders(countryCode) {
+        const color = await this.#getColors();
         
         if(this.#borderData) this.#borderData.remove();
         
@@ -76,8 +90,7 @@ class MapView{
                 "coordinates": countryBorderPoints
             }
         }
-        const countryImg = document.querySelector('.country_img');
-        const color = await getImgDominantColor(countryImg);
+        
     
         this.#borderData = L.geoJSON(countryBorderPointsObj, {
           style: function() {
@@ -90,7 +103,7 @@ class MapView{
 
     #adjustMapZoom(area, latlng) {
         const zoom = getZoom(area);
-        this.#map.flyTo(latlng, zoom, {duration: 3});
+        this.#map.flyTo(latlng, zoom, {duration: 5});
     }
 }
 

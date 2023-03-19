@@ -17,14 +17,30 @@ const imageLoaded = img =>
 
 const getImgDominantColor = async img => {
     const colorThief = new ColorThief();
-    if (img.complete) {
-        const rgbColor =  colorThief.getColor(img);
-        return rgbToHex(...rgbColor);
-    } else {
-        const loadedImg = await imageLoaded(img);
-        const rgbColor =  colorThief.getColor(loadedImg);
-        return rgbToHex(...rgbColor);
-    }
+    if(!img.complete) await imageLoaded(img);
+
+    const rgbColor =  colorThief.getColor(img);
+    return rgbToHex(...rgbColor);
+}
+
+const getPalette = async img => {
+    const colorThief = new ColorThief();
+    if(!img.complete) await imageLoaded(img);
+
+    const palette = colorThief.getPalette(img);
+    return palette.map(color => rgbToHex(...color));
+}
+
+const isColorToBright = (color) => {
+    const c = color.substring(1);      // strip #
+    const rgb = parseInt(c, 16);   // convert rrggbb to decimal
+    const r = (rgb >> 16) & 0xff;  // extract red
+    const g = (rgb >>  8) & 0xff;  // extract green
+    const b = (rgb >>  0) & 0xff;  // extract blue
+
+    const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+    console.log(luma)
+    return luma >= 220;
 }
 
 const getZoom = (countryArea) => {
@@ -59,4 +75,8 @@ const getJSON = async (url) => {
     }
 }
 
-export {generateRandomInteger, getImgDominantColor, getZoom, getJSON};
+const changePropery = (el, prop, value) => {
+    el.style.setProperty(prop, value);
+}
+
+export {generateRandomInteger, getImgDominantColor, getPalette, getZoom, getJSON, changePropery};

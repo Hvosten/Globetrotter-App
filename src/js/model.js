@@ -19,7 +19,6 @@ export async function getCountryData(countryName) {
     if(countryIndex === -1) {
         const countryData = await getCountryDataByName(countryName);
         state.currentCountryData = createCountryObject(countryData); 
-        console.log(state.currentCountryData)
         state.retrievedCountriesData.push(state.currentCountryData);
         state.currIndex = state.retrievedCountriesData.length - 1;
     } else {
@@ -30,7 +29,6 @@ export async function getCountryData(countryName) {
 
 function createCountryObject(data){
     const countryData = data[0];
-    console.log(countryData)
     return {
         commonName: countryData.name.common,
         officialName: countryData.name.official,
