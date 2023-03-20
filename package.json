@@ -2,7 +2,7 @@
   "name": "js-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "default": "index.html",
   "dependencies": {
     "bootstrap": "^5.2.3",
     "colorthief": "^2.4.0",
@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html",
+    "build": "parcel build index.html --dist-dir ./dist",
     "test": "vitest --globals"
   },
   "repository": {
