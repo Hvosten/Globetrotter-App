@@ -4,7 +4,9 @@
 * [Setup](#setup)
 
 ## Globetrotter App
+**Demo** on [netlify](https://globetrotter-app-radek.netlify.app/)\
 This project display country data using restcountries API (https://restcountries.com/) and borders using leaflet library (https://leafletjs.com/).
+
 	
 ## Technologies
 Project is created with:
